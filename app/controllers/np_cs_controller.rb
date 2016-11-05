@@ -8,5 +8,9 @@ def index
   render json: npc_props.to_json
 end
 
+def wakeup
+  render plain: 'i woke up!'
+end 
+
 
 end

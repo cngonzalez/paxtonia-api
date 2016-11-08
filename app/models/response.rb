@@ -7,20 +7,34 @@ class Response < ApplicationRecord
   rep = self.npc.game.hero_reputation
   personality = self.npc.personality
   analysis = make_analysis(rep, personality, input)
-  # analysis == 1 ? informative : rude
-  informative  
+  analysis == 1 ? informative : rude
  end
 
  def informative
-  information_file = File.read('app/assets/docs/talk.json')
-  talk = JSON.parse(information_file)
+  talk = get_info
   keywords = find_keywords(input, talk["information"].keys)
   if !keywords.empty?
-    self.content = keywords.map{|key| talk[key]}.join(" And ")
-    npc.game.hero_reputation += score_input(input)/20 if score_input(input) > 20
-    self.save
-    self.npc.game.save
-    self.content += "\n Your ego has been inflated!"
+    construct_content(keywords, talk["information"])
+  else
+    self.content = talk["smalltalk"].sample
+  end 
+  npc.game.alter_ego(score_input(input))
+ end
+
+ def rude
+   self.content = get_info["curses"].sample 
+ end
+
+ def get_info
+  information_file = File.read('app/assets/docs/talk.json')
+  JSON.parse(information_file)
+ end
+
+ def construct_content(keywords, talk)
+  if keywords.length > 1
+     self.content = keywords.map{|key| talk[key]}.join(" And ")
+  else 
+    self.content = talk[keywords[0]]
   end
  end
 

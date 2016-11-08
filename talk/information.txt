@@ -1,7 +1,0 @@
-monster => There are no such things, just angels.
-king => Asshole, like all the other blue-bloods.
-stories => There is a legend of a great relic.
-legend => There's a sword called ex-mortis with amazing powers.
-ex-mortis => The wielder of this sword will save the world. But only if you are not afraid of ghosts.
-ghosts => Some travelers speak of a ghost wielding a sword near a ruined inn.
-inn => It's to the South.

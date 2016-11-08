@@ -1,0 +1,14 @@
+scoundrel
+thief
+babe
+bugger\w*
+idiot
+shit\w*
+crap\w*
+fuck\w*
+jerk\w*
+cur
+curse\w*
+kill
+slaughter
+fool

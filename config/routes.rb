@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :games
   resources :npcs do 
     resources :responses, only: [:new]
   end

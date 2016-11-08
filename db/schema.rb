@@ -10,16 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161107135831) do
+ActiveRecord::Schema.define(version: 20161107152940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "games", force: :cascade do |t|
+    t.integer  "hero_reputation"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
 
   create_table "npcs", force: :cascade do |t|
     t.string   "name"
     t.integer  "personality"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.integer  "game_id"
+    t.index ["game_id"], name: "index_npcs_on_game_id", using: :btree
   end
 
   create_table "responses", force: :cascade do |t|
@@ -32,5 +40,6 @@ ActiveRecord::Schema.define(version: 20161107135831) do
     t.index ["npc_id"], name: "index_responses_on_npc_id", using: :btree
   end
 
+  add_foreign_key "npcs", "games"
   add_foreign_key "responses", "npcs"
 end

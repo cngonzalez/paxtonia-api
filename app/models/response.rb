@@ -11,6 +11,7 @@ class Response < ApplicationRecord
  end
 
  def informative
+  self.pass = true
   talk = get_info
   keywords = find_keywords(input, talk["information"].keys)
   if !keywords.empty?
@@ -22,6 +23,7 @@ class Response < ApplicationRecord
  end
 
  def rude
+   self.pass = false
    self.content = get_info["curses"].sample 
  end
 

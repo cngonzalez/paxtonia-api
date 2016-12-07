@@ -1,6 +1,6 @@
 class Npc < ApplicationRecord
   belongs_to :game
-  belongs_to :turn
+  has_many :turns, through: :npc_turns
   has_many :responses
 
   def temperament

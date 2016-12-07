@@ -1,14 +1,15 @@
 class Response < ApplicationRecord
   include Analyzable
-  belongs_to :npc
   belongs_to :turn
   after_initialize :analyze_and_decide
 
  def analyze_and_decide
-  rep = self.npc.game.hero_reputation
-  personality = self.npc.personality
+  rep = self.turn.game.hero_reputation
+  personality = self.turn.npc.personality
   analysis = make_analysis(rep, personality, input)
   analysis == 1 ? informative : rude
+  self.turn.alter_ego(score_input(input))
+  self.turn.update(input: self.input, content: self.content) 
  end
 
  def informative
@@ -20,7 +21,6 @@ class Response < ApplicationRecord
   else
     self.content = talk["smalltalk"].sample
   end 
-  npc.game.alter_ego(score_input(input))
  end
 
  def rude

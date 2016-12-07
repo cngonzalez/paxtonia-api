@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161207183603) do
+ActiveRecord::Schema.define(version: 20161207223545) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,24 +22,35 @@ ActiveRecord::Schema.define(version: 20161207183603) do
     t.string   "action"
   end
 
+  create_table "npc_turns", force: :cascade do |t|
+    t.integer  "npc_id"
+    t.integer  "turn_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["npc_id"], name: "index_npc_turns_on_npc_id", using: :btree
+    t.index ["turn_id"], name: "index_npc_turns_on_turn_id", using: :btree
+  end
+
   create_table "npcs", force: :cascade do |t|
     t.string   "name"
     t.integer  "personality"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "game_id"
+    t.integer  "turn_id"
     t.index ["game_id"], name: "index_npcs_on_game_id", using: :btree
+    t.index ["turn_id"], name: "index_npcs_on_turn_id", using: :btree
   end
 
   create_table "responses", force: :cascade do |t|
     t.text     "content"
-    t.integer  "npc_id"
     t.text     "input"
     t.integer  "hero_reputation"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.boolean  "pass"
-    t.index ["npc_id"], name: "index_responses_on_npc_id", using: :btree
+    t.integer  "turn_id"
+    t.index ["turn_id"], name: "index_responses_on_turn_id", using: :btree
   end
 
   create_table "turns", force: :cascade do |t|
@@ -53,7 +64,10 @@ ActiveRecord::Schema.define(version: 20161207183603) do
     t.index ["game_id"], name: "index_turns_on_game_id", using: :btree
   end
 
+  add_foreign_key "npc_turns", "npcs"
+  add_foreign_key "npc_turns", "turns"
   add_foreign_key "npcs", "games"
-  add_foreign_key "responses", "npcs"
+  add_foreign_key "npcs", "turns"
+  add_foreign_key "responses", "turns"
   add_foreign_key "turns", "games"
 end

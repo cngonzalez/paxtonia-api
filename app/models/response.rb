@@ -1,6 +1,7 @@
 class Response < ApplicationRecord
   include Analyzable
   belongs_to :npc
+  belongs_to :turn
   after_initialize :analyze_and_decide
 
  def analyze_and_decide

@@ -9,15 +9,15 @@ class GamesController < ApplicationController
   end
 
   def talk
-    game = Game.find(params[:id])
+    game = Game.find(params[:id]
     npc = game.npcs.last
     npc.responses.build(input: talk_params[:input])
+    game.turns.build(response: npc.responses.last, npc: npc) 
     game.next_step(npc.responses.last)
-    # come up with status messages to add to the json pile to alert new npc, hero inflation, etc
-    if npc.save
-      render json: npc.responses.last.to_json
+    if game.save
+      render json: game.turns.last.to_json
     else 
-      render json: npc.errors.to_json
+      render json: game.errors.to_json
     end
   end
 

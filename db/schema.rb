@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161122194306) do
+ActiveRecord::Schema.define(version: 20161207174604) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,15 @@ ActiveRecord::Schema.define(version: 20161122194306) do
     t.index ["npc_id"], name: "index_responses_on_npc_id", using: :btree
   end
 
+  create_table "turns", force: :cascade do |t|
+    t.string   "status"
+    t.integer  "game_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_turns_on_game_id", using: :btree
+  end
+
   add_foreign_key "npcs", "games"
   add_foreign_key "responses", "npcs"
+  add_foreign_key "turns", "games"
 end
